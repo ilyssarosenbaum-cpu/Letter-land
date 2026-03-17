@@ -3,151 +3,204 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Letter Land – Kindergarten Phonics Game</title>
+<title>Word Quest – First Grade Phonics Game</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:#faf9ff;min-height:100vh;display:flex;justify-content:center;padding:1rem}
+body{font-family:'Nunito',sans-serif;background:#f0f6ff;min-height:100vh;display:flex;justify-content:center;padding:1rem}
 #app{width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem 1rem 2rem}
 .top{width:100%;display:flex;align-items:center;justify-content:space-between}
-.game-title{font-family:'Fredoka One',cursive;font-size:2rem;color:#7F77DD}
-.stars-display{display:flex;align-items:center;gap:6px;background:#FAEEDA;border:2px solid #FAC775;border-radius:999px;padding:5px 14px}
-.stars-count{font-family:'Fredoka One',cursive;font-size:1.3rem;color:#633806}
-.star-icon{font-size:18px;color:#BA7517}
-.mode-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%}
-.mode-btn{font-family:'Fredoka One',cursive;font-size:14px;padding:7px 16px;border-radius:999px;border:2.5px solid transparent;cursor:pointer;transition:transform .12s;background:#F1EFE8;color:#444441}
+.game-title{font-family:'Fredoka One',cursive;font-size:1.8rem;color:#185FA5}
+.hud{display:flex;gap:8px;align-items:center}
+.stars-pill{display:flex;align-items:center;gap:5px;background:#FAEEDA;border:2px solid #FAC775;border-radius:999px;padding:4px 12px}
+.stars-num{font-family:'Fredoka One',cursive;font-size:1.1rem;color:#633806}
+.streak-pill{display:flex;align-items:center;gap:5px;background:#FAECE7;border:2px solid #F0997B;border-radius:999px;padding:4px 12px}
+.streak-num{font-family:'Fredoka One',cursive;font-size:1.1rem;color:#712B13}
+.mode-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;width:100%}
+.mode-btn{font-family:'Fredoka One',cursive;font-size:13px;padding:6px 14px;border-radius:999px;border:2.5px solid transparent;cursor:pointer;transition:transform .12s;background:#E6F1FB;color:#042C53}
 .mode-btn:active{transform:scale(.93)}
-.mode-btn.on{border-color:#7F77DD;background:#EEEDFE;color:#3C3489}
-.big-card{width:100%;border-radius:26px;border:3px solid #AFA9EC;background:#F5F3FF;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem 1.25rem;gap:.75rem;min-height:200px;cursor:pointer;transition:transform .12s}
+.mode-btn.on{border-color:#185FA5;background:#B5D4F4;color:#042C53}
+.big-card{width:100%;border-radius:24px;border:3px solid #85B7EB;background:#EFF6FF;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.25rem;gap:.6rem;min-height:180px;cursor:pointer;transition:transform .12s}
 .big-card:active{transform:scale(.97)}
-.letter-huge{font-family:'Fredoka One',cursive;font-size:6rem;line-height:1;color:#3C3489}
-.card-label{font-size:13px;font-weight:700;color:#534AB7;letter-spacing:1.5px;text-transform:uppercase}
-.tap-note{font-size:13px;color:#888780;font-weight:700}
-.choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
-.choice{font-family:'Fredoka One',cursive;font-size:1.4rem;padding:18px 12px;border-radius:20px;border:2.5px solid #AFA9EC;background:#EEEDFE;color:#26215C;cursor:pointer;text-align:center;transition:transform .12s,background .12s}
+.card-label{font-size:12px;font-weight:700;color:#185FA5;letter-spacing:1.5px;text-transform:uppercase}
+.word-big{font-family:'Fredoka One',cursive;font-size:3rem;color:#042C53;text-align:center;line-height:1.1}
+.sentence-display{font-family:'Nunito',sans-serif;font-weight:700;font-size:1.1rem;color:#0C447C;text-align:center;line-height:1.6;max-width:420px}
+.sentence-display .blank{font-family:'Fredoka One',cursive;color:#D85A30;background:#FAECE7;border-radius:8px;padding:2px 10px;font-size:1.2rem}
+.tap-note{font-size:12px;color:#888780;font-weight:700}
+.choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%}
+.choice{font-family:'Fredoka One',cursive;font-size:1.25rem;padding:16px 10px;border-radius:18px;border:2.5px solid #85B7EB;background:#EFF6FF;color:#042C53;cursor:pointer;text-align:center;transition:transform .12s,background .12s;line-height:1.3}
 .choice:active{transform:scale(.95)}
 .choice.correct{background:#EAF3DE;border-color:#97C459;color:#27500A;animation:pop .3s cubic-bezier(.34,1.56,.64,1)}
 .choice.wrong{background:#FCEBEB;border-color:#F09595;color:#791F1F;animation:shake .3s}
-@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.feedback-band{width:100%;border-radius:16px;padding:12px 16px;text-align:center;font-family:'Fredoka One',cursive;font-size:1.1rem;display:none}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.feedback-band{width:100%;border-radius:14px;padding:11px 14px;text-align:center;font-family:'Fredoka One',cursive;font-size:1rem;display:none}
 .feedback-band.show{display:block}
 .feedback-band.yay{background:#EAF3DE;color:#27500A;border:2px solid #97C459}
 .feedback-band.nope{background:#FCEBEB;color:#791F1F;border:2px solid #F09595}
-.btn-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
-.say-btn{font-family:'Fredoka One',cursive;font-size:1rem;padding:10px 24px;border-radius:999px;border:none;background:#534AB7;color:#fff;cursor:pointer;display:flex;align-items:center;gap:8px;transition:transform .12s}
+.btn-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.say-btn{font-family:'Fredoka One',cursive;font-size:.95rem;padding:9px 20px;border-radius:999px;border:none;background:#185FA5;color:#fff;cursor:pointer;display:flex;align-items:center;gap:7px;transition:transform .12s}
 .say-btn:active{transform:scale(.95)}
-.say-btn:hover{background:#3C3489}
-.next-btn{font-family:'Fredoka One',cursive;font-size:1rem;padding:10px 28px;border-radius:999px;border:none;background:#1D9E75;color:#fff;cursor:pointer;transition:transform .12s;display:none}
+.say-btn:hover{background:#0C447C}
+.next-btn{font-family:'Fredoka One',cursive;font-size:.95rem;padding:9px 24px;border-radius:999px;border:none;background:#1D9E75;color:#fff;cursor:pointer;transition:transform .12s;display:none}
 .next-btn:active{transform:scale(.95)}
 .next-btn.show{display:block}
 .prog-row{display:flex;gap:6px;align-items:center;width:100%}
-.prog-bg{flex:1;height:10px;background:#e8e8e8;border-radius:999px;overflow:hidden}
-.prog-fill{height:100%;border-radius:999px;background:#7F77DD;transition:width .4s ease}
-.prog-lbl{font-family:'Fredoka One',cursive;font-size:.95rem;color:#888780;min-width:48px;text-align:right}
-.celebrate{width:100%;border-radius:26px;border:3px solid #FAC775;background:#FAEEDA;padding:2rem 1.5rem;flex-direction:column;align-items:center;gap:1rem;display:none}
+.prog-bg{flex:1;height:9px;background:#dce8f5;border-radius:999px;overflow:hidden}
+.prog-fill{height:100%;border-radius:999px;background:#378ADD;transition:width .4s ease}
+.prog-lbl{font-family:'Fredoka One',cursive;font-size:.9rem;color:#888780;min-width:46px;text-align:right}
+.celebrate{width:100%;border-radius:24px;border:3px solid #FAC775;background:#FAEEDA;padding:1.75rem 1.25rem;flex-direction:column;align-items:center;gap:.9rem;display:none}
 .celebrate.show{display:flex}
-.cel-title{font-family:'Fredoka One',cursive;font-size:2rem;color:#633806;text-align:center}
-.cel-stars{font-size:2.5rem;letter-spacing:4px;color:#BA7517}
-.play-again{font-family:'Fredoka One',cursive;font-size:1.1rem;padding:12px 32px;border-radius:999px;border:none;background:#7F77DD;color:#fff;cursor:pointer;transition:transform .12s}
+.cel-title{font-family:'Fredoka One',cursive;font-size:1.8rem;color:#633806;text-align:center}
+.cel-score{font-family:'Fredoka One',cursive;font-size:1.1rem;color:#854F0B;text-align:center}
+.play-again{font-family:'Fredoka One',cursive;font-size:1rem;padding:11px 28px;border-radius:999px;border:none;background:#185FA5;color:#fff;cursor:pointer;transition:transform .12s}
 .play-again:active{transform:scale(.95)}
 </style>
 </head>
 <body>
 <div id="app">
   <div class="top">
-    <div class="game-title">Letter Land!</div>
-    <div class="stars-display">
-      <span class="star-icon">&#9733;</span>
-      <span class="stars-count" id="star-count">0</span>
+    <div class="game-title">Word Quest!</div>
+    <div class="hud">
+      <div class="stars-pill"><span style="font-size:16px;color:#BA7517">&#9733;</span><span class="stars-num" id="star-count">0</span></div>
+      <div class="streak-pill"><span style="font-size:16px;color:#D85A30">&#9889;</span><span class="streak-num" id="streak-count">0</span></div>
     </div>
   </div>
   <div class="mode-row" id="mode-row">
-    <button class="mode-btn on" data-mode="letters">ABC Letters</button>
-    <button class="mode-btn" data-mode="sounds">Letter Sounds</button>
-    <button class="mode-btn" data-mode="words">Sight Words</button>
-    <button class="mode-btn" data-mode="rhyme">Rhyme Time</button>
+    <button class="mode-btn on" data-mode="blends">Blends</button>
+    <button class="mode-btn" data-mode="digraphs">Digraphs</button>
+    <button class="mode-btn" data-mode="longvowel">Long Vowels</button>
+    <button class="mode-btn" data-mode="sightwords">Sight Words</button>
+    <button class="mode-btn" data-mode="sentence">Fill the Blank</button>
   </div>
   <div class="big-card" id="big-card"></div>
   <div class="choices-grid" id="choices-grid"></div>
   <div class="feedback-band" id="feedback"></div>
   <div class="btn-row">
     <button class="say-btn" id="say-btn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
       Say it!
     </button>
     <button class="next-btn" id="next-btn">Next &#8594;</button>
   </div>
   <div class="prog-row">
     <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-    <div class="prog-lbl" id="prog-lbl">0 / 8</div>
+    <div class="prog-lbl" id="prog-lbl">0 / 10</div>
   </div>
   <div class="celebrate" id="celebrate">
-    <div class="cel-title" id="cel-msg">Amazing job!</div>
-    <div class="cel-stars" id="cel-stars">&#9733;&#9733;&#9733;</div>
-    <div style="font-family:'Fredoka One',cursive;font-size:1rem;color:#854F0B" id="cel-sub"></div>
+    <div class="cel-title" id="cel-msg">Awesome!</div>
+    <div class="cel-score" id="cel-score"></div>
+    <div style="font-size:2rem;color:#BA7517" id="cel-stars"></div>
     <button class="play-again" id="play-again">Play again!</button>
   </div>
 </div>
 <script>
 const MODES = {
-  letters:{
-    label:"What letter is this?",
-    items:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
-    getChoices(item,all){return shuffle([item,...shuffle(all.filter(x=>x!==item)).slice(0,3)])},
-    isCorrect(choice,item){return choice===item},
-    speak(item){say(item+". "+item+" says "+sounds[item])},
-    display(item){return `<div class="card-label">What letter is this?</div><div class="letter-huge">${item}</div><div class="tap-note">tap to hear it!</div>`},
-    choiceLabel(c){return c}
-  },
-  sounds:{
-    label:"Which letter makes this sound?",
-    items:["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","R","S","T","U","V","W"],
-    getChoices(item,all){return shuffle([item,...shuffle(all.filter(x=>x!==item)).slice(0,3)])},
-    isCorrect(choice,item){return choice===item},
-    speak(item){say(sounds[item])},
-    display(item){return `<div class="card-label">Which letter makes this sound?</div><div style="font-family:'Fredoka One',cursive;font-size:2rem;color:#0F6E56;background:#E1F5EE;padding:16px 28px;border-radius:16px">${sounds[item]}</div><div class="tap-note">tap to hear the sound!</div>`},
-    choiceLabel(c){return c}
-  },
-  words:{
-    label:"Find the matching picture!",
+  blends:{
+    label:"Which blend does this word start with?",
     items:[
-      {w:"cat",e:"🐱"},{w:"dog",e:"🐶"},{w:"sun",e:"☀️"},{w:"hat",e:"🎩"},{w:"bat",e:"🦇"},
-      {w:"map",e:"🗺️"},{w:"cup",e:"☕"},{w:"bug",e:"🐛"},{w:"hen",e:"🐔"},{w:"bed",e:"🛏️"},
-      {w:"fox",e:"🦊"},{w:"pig",e:"🐷"},{w:"jet",e:"✈️"},{w:"web",e:"🕸️"},{w:"log",e:"🪵"}
+      {w:"frog",a:"fr",choices:["fr","cl","st","br"]},{w:"clap",a:"cl",choices:["bl","cl","fl","sl"]},
+      {w:"step",a:"st",choices:["st","sp","sk","sn"]},{w:"drip",a:"dr",choices:["tr","dr","gr","pr"]},
+      {w:"plan",a:"pl",choices:["pl","fl","bl","cl"]},{w:"grip",a:"gr",choices:["gr","dr","tr","br"]},
+      {w:"swim",a:"sw",choices:["sw","sl","sm","sn"]},{w:"brag",a:"br",choices:["fr","gr","br","dr"]},
+      {w:"flag",a:"fl",choices:["fl","pl","sl","bl"]},{w:"snap",a:"sn",choices:["st","sp","sn","sw"]},
+      {w:"prim",a:"pr",choices:["pr","br","tr","dr"]},{w:"slim",a:"sl",choices:["sl","fl","pl","cl"]},
     ],
-    getChoices(item,all){return shuffle([item,...shuffle(all.filter(x=>x.w!==item.w)).slice(0,3)])},
-    isCorrect(choice,item){return choice.w===item.w},
+    display(item){return `<div class="card-label">Which blend does this word start with?</div><div class="word-big">${item.w}</div><div class="tap-note">tap to hear it!</div>`},
+    getChoices(item){return item.choices},
+    isCorrect(c,item){return c===item.a},
     speak(item){say(item.w)},
-    display(item){return `<div class="card-label">Find the matching picture!</div><div style="font-family:'Fredoka One',cursive;font-size:3rem;color:#3C3489;text-align:center">${item.w}</div><div class="tap-note">tap to hear the word!</div>`},
-    choiceLabel(c){return c.e}
+    choiceLabel(c){return c}
   },
-  rhyme:{
-    label:"Which word rhymes?",
+  digraphs:{
+    label:"Which digraph do you see?",
     items:[
-      {word:"cat",correct:"bat",wrong:["dog","sun","cup"]},
-      {word:"hop",correct:"top",wrong:["cat","bee","run"]},
-      {word:"hen",correct:"ten",wrong:["dog","map","sun"]},
-      {word:"bug",correct:"hug",wrong:["bat","fox","pen"]},
-      {word:"sun",correct:"run",wrong:["hat","bed","pig"]},
-      {word:"map",correct:"nap",wrong:["cup","dog","hen"]},
-      {word:"bed",correct:"red",wrong:["bat","sun","fox"]},
-      {word:"cup",correct:"pup",wrong:["hen","map","jet"]}
+      {w:"ship",a:"sh",choices:["sh","ch","th","wh"]},{w:"chip",a:"ch",choices:["ch","sh","th","ph"]},
+      {w:"thin",a:"th",choices:["th","sh","ch","wh"]},{w:"when",a:"wh",choices:["wh","sh","ch","th"]},
+      {w:"phone",a:"ph",choices:["ph","sh","ch","th"]},{w:"that",a:"th",choices:["th","sh","wh","ch"]},
+      {w:"shed",a:"sh",choices:["sh","ch","ph","th"]},{w:"chop",a:"ch",choices:["ch","sh","wh","ph"]},
+      {w:"whale",a:"wh",choices:["wh","sh","th","ch"]},{w:"graph",a:"ph",choices:["ph","th","sh","ch"]},
     ],
-    getChoices(item){return shuffle([item.correct,...item.wrong])},
-    isCorrect(choice,item){return choice===item.correct},
-    speak(item){say(item.word)},
-    display(item){return `<div class="card-label">Which word rhymes?</div><div style="font-family:'Fredoka One',cursive;font-size:3.5rem;color:#3C3489">${item.word}</div><div class="tap-note">tap to hear it!</div>`},
+    display(item){return `<div class="card-label">Which digraph do you see?</div><div class="word-big">${item.w}</div><div class="tap-note">tap to hear it!</div>`},
+    getChoices(item){return item.choices},
+    isCorrect(c,item){return c===item.a},
+    speak(item){say(item.w)},
+    choiceLabel(c){return c}
+  },
+  longvowel:{
+    label:"What long vowel sound do you hear?",
+    items:[
+      {w:"cake",a:"long A",choices:["long A","long E","long I","long O"]},
+      {w:"feet",a:"long E",choices:["long A","long E","long I","long U"]},
+      {w:"bike",a:"long I",choices:["long A","long E","long I","long O"]},
+      {w:"rope",a:"long O",choices:["long A","long O","long I","long U"]},
+      {w:"cube",a:"long U",choices:["long A","long E","long O","long U"]},
+      {w:"rain",a:"long A",choices:["long A","long E","long I","long O"]},
+      {w:"sleep",a:"long E",choices:["long A","long E","long O","long U"]},
+      {w:"kite",a:"long I",choices:["long E","long I","long O","long U"]},
+      {w:"road",a:"long O",choices:["long A","long E","long O","long U"]},
+      {w:"tune",a:"long U",choices:["long A","long I","long O","long U"]},
+      {w:"stay",a:"long A",choices:["long A","long E","long I","long U"]},
+      {w:"green",a:"long E",choices:["long A","long E","long O","long I"]},
+    ],
+    display(item){return `<div class="card-label">What long vowel sound do you hear?</div><div class="word-big">${item.w}</div><div class="tap-note">tap to hear it!</div>`},
+    getChoices(item){return item.choices},
+    isCorrect(c,item){return c===item.a},
+    speak(item){say(item.w)},
+    choiceLabel(c){return c}
+  },
+  sightwords:{
+    label:"Read the word — what does it mean?",
+    items:[
+      {w:"because",a:"gives a reason",choices:["gives a reason","names a place","shows a color","counts things"]},
+      {w:"friend",a:"someone you like",choices:["someone you like","a big animal","a type of food","a feeling"]},
+      {w:"before",a:"earlier in time",choices:["earlier in time","a place to sit","a type of game","a loud sound"]},
+      {w:"always",a:"every single time",choices:["every single time","just one time","never ever","only sometimes"]},
+      {w:"should",a:"what is a good idea",choices:["what is a good idea","a color","a number","a place"]},
+      {w:"together",a:"with each other",choices:["with each other","far apart","very fast","very tall"]},
+      {w:"enough",a:"as much as needed",choices:["as much as needed","too much","none at all","very little"]},
+      {w:"people",a:"more than one person",choices:["more than one person","a type of animal","a kind of toy","a place outside"]},
+      {w:"again",a:"one more time",choices:["one more time","never again","going away","very slowly"]},
+      {w:"every",a:"each one",choices:["each one","only a few","just one","none of them"]},
+    ],
+    display(item){return `<div class="card-label">Read the word — what does it mean?</div><div class="word-big">${item.w}</div><div class="tap-note">tap to hear it!</div>`},
+    getChoices(item){return item.choices},
+    isCorrect(c,item){return c===item.a},
+    speak(item){say(item.w)},
+    choiceLabel(c){return c}
+  },
+  sentence:{
+    label:"Pick the right word to finish the sentence!",
+    items:[
+      {s:"The dog ran ___ the park.",a:"through",choices:["through","though","threw","thought"]},
+      {s:"She ___ her shoes before going out.",a:"tied",choices:["tied","tide","tried","died"]},
+      {s:"We ___ to the store after school.",a:"walked",choices:["walked","talked","worked","waked"]},
+      {s:"The bird can ___ very high.",a:"fly",choices:["fly","fry","cry","dry"]},
+      {s:"He ___ a book about dinosaurs.",a:"read",choices:["read","reed","red","ride"]},
+      {s:"Please be ___ in the library.",a:"quiet",choices:["quiet","quite","quick","quit"]},
+      {s:"The cake smells really ___.",a:"sweet",choices:["sweet","sweat","sweep","sheet"]},
+      {s:"They played ___ in the rain.",a:"outside",choices:["outside","inside","upside","beside"]},
+      {s:"I can ___ my name now!",a:"write",choices:["write","right","ride","white"]},
+      {s:"The sun ___ early in summer.",a:"rises",choices:["rises","raises","races","rices"]},
+      {s:"She felt ___ when she won.",a:"happy",choices:["happy","hippy","hoppy","hurry"]},
+      {s:"Can you ___ that word for me?",a:"spell",choices:["spell","spill","smell","shell"]},
+    ],
+    display(item){
+      const parts=item.s.split("___");
+      return `<div class="card-label">Pick the right word to finish the sentence!</div><div class="sentence-display">${parts[0]}<span class="blank">___</span>${parts[1]}</div><div class="tap-note">tap to hear the sentence!</div>`;
+    },
+    getChoices(item){return shuffle(item.choices)},
+    isCorrect(c,item){return c===item.a},
+    speak(item){say(item.s.replace("___","blank"))},
     choiceLabel(c){return c}
   }
 };
-const sounds={A:"aah",B:"buh",C:"kuh",D:"duh",E:"eh",F:"fuh",G:"guh",H:"huh",I:"ih",J:"juh",K:"kuh",L:"luh",M:"muh",N:"nuh",O:"oh",P:"puh",R:"ruh",S:"sss",T:"tuh",U:"uh",V:"vuh",W:"wuh"};
-const YAY=["Woohoo! Amazing!","You got it! Super star!","Yes yes yes! Great job!","Brilliant! Keep going!","So smart! You rock!","Perfect! High five!"];
-const NOPE=["Oops! Try again!","Almost! Give it another go!","Not quite — you can do it!","Keep trying, superstar!"];
-let mode="letters",stars=0,deck=[],idx=0,answered=false;
-const roundSize=8;
+const YAY=["Amazing! You got it!","Superstar! Correct!","Woohoo! Great reading!","Yes! That's right!","Brilliant work!","You rock! Correct!"];
+const NOPE=["Oops! Try again!","Almost! Keep going!","Not quite — you can do it!","Good try! Keep reading!"];
+let mode="blends",stars=0,streak=0,deck=[],idx=0,answered=false;
+const roundSize=10;
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function say(text){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=0.8;u.pitch=1.1;window.speechSynthesis.speak(u);}
+function say(text){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=0.82;u.pitch=1.05;window.speechSynthesis.speak(u);}
 function buildDeck(){deck=shuffle([...MODES[mode].items]).slice(0,roundSize);idx=0;answered=false;}
 function renderCard(){
   answered=false;
@@ -156,19 +209,32 @@ function renderCard(){
   card.innerHTML=cfg.display(item);card.onclick=()=>cfg.speak(item);
   document.getElementById("feedback").className="feedback-band";
   document.getElementById("next-btn").className="next-btn";
-  const choices=cfg.getChoices(item,cfg.items),grid=document.getElementById("choices-grid");
+  const choices=cfg.getChoices(item),grid=document.getElementById("choices-grid");
   grid.innerHTML="";
-  choices.forEach(c=>{const btn=document.createElement("button");btn.className="choice";btn._data=c;btn.innerHTML=`<span style="font-size:1.5rem">${cfg.choiceLabel(c)}</span>`;btn.onclick=()=>handleChoice(btn,c,item,choices,grid);grid.appendChild(btn);});
+  choices.forEach(c=>{const btn=document.createElement("button");btn.className="choice";btn._data=c;btn.innerHTML=`<span style="font-size:1.1rem">${cfg.choiceLabel(c)}</span>`;btn.onclick=()=>handleChoice(btn,c,item,grid);grid.appendChild(btn);});
   document.getElementById("prog-fill").style.width=Math.round((idx/roundSize)*100)+"%";
   document.getElementById("prog-lbl").textContent=idx+" / "+roundSize;
 }
-function handleChoice(btn,choice,item,choices,grid){
+function handleChoice(btn,choice,item,grid){
   if(answered)return;answered=true;
   const cfg=MODES[mode],correct=cfg.isCorrect(choice,item),fb=document.getElementById("feedback");
   grid.querySelectorAll(".choice").forEach(b=>b.onclick=null);
-  if(correct){btn.classList.add("correct");stars++;document.getElementById("star-count").textContent=stars;const msg=YAY[Math.floor(Math.random()*YAY.length)];fb.textContent=msg+" ⭐";fb.className="feedback-band show yay";say(msg);}
-  else{btn.classList.add("wrong");grid.querySelectorAll(".choice").forEach(b=>{if(cfg.isCorrect(b._data,item))b.classList.add("correct");});const msg=NOPE[Math.floor(Math.random()*NOPE.length)];fb.textContent=msg;fb.className="feedback-band show nope";}
-  if(idx+1>=roundSize){setTimeout(showCelebrate,1100);}else{document.getElementById("next-btn").className="next-btn show";}
+  if(correct){
+    btn.classList.add("correct");stars++;streak++;
+    document.getElementById("star-count").textContent=stars;
+    document.getElementById("streak-count").textContent=streak;
+    const msg=YAY[Math.floor(Math.random()*YAY.length)];
+    fb.textContent=msg+(streak>=3?" ⚡ "+streak+" in a row!":"")+" ⭐";
+    fb.className="feedback-band show yay";
+    say(streak>=3?"Amazing streak! "+msg:msg);
+  } else {
+    streak=0;document.getElementById("streak-count").textContent=0;
+    btn.classList.add("wrong");
+    grid.querySelectorAll(".choice").forEach(b=>{if(cfg.isCorrect(b._data,item))b.classList.add("correct");});
+    const msg=NOPE[Math.floor(Math.random()*NOPE.length)];
+    fb.textContent=msg;fb.className="feedback-band show nope";
+  }
+  if(idx+1>=roundSize){setTimeout(showCelebrate,1200);}else{document.getElementById("next-btn").className="next-btn show";}
 }
 function showCelebrate(){
   document.getElementById("celebrate").classList.add("show");
@@ -177,16 +243,18 @@ function showCelebrate(){
   document.getElementById("next-btn").className="next-btn";
   document.getElementById("prog-fill").style.width="100%";
   document.getElementById("prog-lbl").textContent=roundSize+" / "+roundSize;
-  const msgs=["You're a reading star!","Incredible work today!","Look how smart you are!","You did it! Amazing!"];
+  const pct=Math.round((stars/roundSize)*100);
+  const msgs=pct>=80?["You're a Word Quest champion!","Reading superstar! Incredible!","You crushed it! Amazing job!"]:["Great effort! Keep reading!","You're getting so good at this!","Keep practising — you're awesome!"];
   document.getElementById("cel-msg").textContent=msgs[Math.floor(Math.random()*msgs.length)];
-  document.getElementById("cel-sub").textContent="You earned "+stars+" stars total!";
-  document.getElementById("cel-stars").textContent="★".repeat(Math.min(stars,5))||"★";
-  say("Woohoo! You finished! You are a superstar!");
+  document.getElementById("cel-score").textContent="You got "+stars+" out of "+roundSize+" right!";
+  const s=Math.round((stars/roundSize)*5);
+  document.getElementById("cel-stars").textContent="★".repeat(Math.max(s,1));
+  say("Amazing! You finished! You are a reading superstar!");
 }
 document.getElementById("next-btn").onclick=()=>{idx++;renderCard();};
 document.getElementById("say-btn").onclick=()=>MODES[mode].speak(deck[idx]);
-document.getElementById("play-again").onclick=()=>{buildDeck();renderCard();};
-document.getElementById("mode-row").querySelectorAll(".mode-btn").forEach(btn=>{btn.onclick=()=>{document.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("on"));btn.classList.add("on");mode=btn.dataset.mode;buildDeck();renderCard();};});
+document.getElementById("play-again").onclick=()=>{stars=0;streak=0;document.getElementById("star-count").textContent=0;document.getElementById("streak-count").textContent=0;buildDeck();renderCard();};
+document.getElementById("mode-row").querySelectorAll(".mode-btn").forEach(btn=>{btn.onclick=()=>{document.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("on"));btn.classList.add("on");mode=btn.dataset.mode;stars=0;streak=0;document.getElementById("star-count").textContent=0;document.getElementById("streak-count").textContent=0;buildDeck();renderCard();};});
 buildDeck();renderCard();
 </script>
 </body>
